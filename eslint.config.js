@@ -1,8 +1,10 @@
 import eslintPluginPrettier from 'eslint-plugin-prettier';
+import prettierConfig from 'eslint-plugin-prettier/config';
 
 /** @type {import("eslint").Linter.FlatConfig} */
 
 export default [
+  prettierConfig,
   {
     files: ['**/*.js'],
     languageOptions: {
