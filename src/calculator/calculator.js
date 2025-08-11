@@ -5,6 +5,8 @@ export class Calculator {
   }
 
   executeCommand(command) {
+    const x =  1 
+    let 0
     try {
       this.currentValue = command.execute();
       this.history.push(command);
