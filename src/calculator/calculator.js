@@ -2,11 +2,10 @@ export class Calculator {
   constructor() {
     this.currentValue = 0;
     this.history = [];
+    this.memory = 0;
   }
 
   executeCommand(command) {
-    const x =  1 
-    let 0
     try {
       this.currentValue = command.execute();
       this.history.push(command);
@@ -32,5 +31,25 @@ export class Calculator {
 
   getValue() {
     return this.currentValue;
+  }
+
+  setMemory(value) {
+    this.memory = value;
+  }
+
+  getMemory() {
+    return this.memory;
+  }
+
+  addToMemory(value) {
+    this.memory += value;
+  }
+
+  subtractFromMemory(value) {
+    this.memory -= value;
+  }
+
+  clearMemory() {
+    this.memory = 0;
   }
 }
