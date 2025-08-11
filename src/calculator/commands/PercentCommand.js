@@ -8,7 +8,7 @@ export class PercentCommand extends Command {
   }
 
   execute() {
-    return this.a * this.b / 100;
+    return (this.a * this.b) / 100;
   }
 
   undo() {

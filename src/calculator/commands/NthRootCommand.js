@@ -11,10 +11,18 @@ export class NthRootCommand extends Command {
     if (this.b === 0) {
       throw new Error('Zero root is invalid');
     }
-    if (this.a < 0 && this.b % 2 === 0) {
+
+    const isEvenRoot = this.b % 2 === 0;
+    const isNegativeBase = this.a < 0;
+
+    if (isEvenRoot && isNegativeBase) {
       throw new Error('Even root of negative number');
-    } 
-    return this.a ** (1 / this.b);
+    }
+
+    const base = this.a < 0 && this.b % 2 !== 0 ? -this.a : this.a;
+    const root = base ** (1 / this.b);
+
+    return this.a < 0 && this.b % 2 !== 0 ? -root : root;
   }
 
   undo() {

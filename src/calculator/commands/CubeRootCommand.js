@@ -7,10 +7,9 @@ export class CubeRootCommand extends Command {
   }
 
   execute() {
-    if (this.value < 0) {
-      throw new Error('Cannot extract square root of negative number');
-    }
-    return this.value ** (1/3);
+    const absValue = this.value < 0 ? -this.value : this.value;
+    const root = absValue ** (1 / 3);
+    return this.value < 0 ? -root : root;
   }
 
   undo() {

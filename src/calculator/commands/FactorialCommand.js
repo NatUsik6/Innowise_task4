@@ -8,7 +8,7 @@ export class FactorialCommand extends Command {
 
   execute() {
     let n = this.value;
-    if (n < 0 || n % 1 !== 0) throw new Error("Invalid factorial input");
+    if (n < 0 || n % 1 !== 0) throw new Error('Invalid factorial input');
     if (n === 0 || n === 1) return 1;
 
     let result = 1;
@@ -17,7 +17,6 @@ export class FactorialCommand extends Command {
     }
     return result;
   }
-
 
   undo() {
     return this.value;

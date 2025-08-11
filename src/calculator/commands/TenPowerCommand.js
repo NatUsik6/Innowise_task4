@@ -1,4 +1,4 @@
-import { Command } from "../command.js";
+import { Command } from '../command.js';
 
 export class TenPowerCommand extends Command {
   constructor(value) {
@@ -13,4 +13,4 @@ export class TenPowerCommand extends Command {
   undo() {
     return this.value;
   }
-} 
+}

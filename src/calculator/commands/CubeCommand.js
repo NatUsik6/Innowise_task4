@@ -1,4 +1,4 @@
-import { Command } from "../command.js";
+import { Command } from '../command.js';
 
 export class CubeCommand extends Command {
   constructor(value) {

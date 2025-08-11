@@ -12,7 +12,7 @@ export class MultiplyCommand extends Command {
   }
 
   undo() {
-    if (this.b === 0) throw new Error("Cannot undo multiplication by zero");
+    if (this.b === 0) throw new Error('Cannot undo multiplication by zero');
     return this.a / this.b;
   }
 }

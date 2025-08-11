@@ -8,8 +8,8 @@ export class InverseCommand extends Command {
 
   execute() {
     if (this.value === 0) {
-      throw new Error('Division by zero');
-    } 
+      throw new Error('Error: division by zero is prohibited');
+    }
     return 1 / this.value;
   }
 

@@ -10,7 +10,7 @@ export class SquareRootCommand extends Command {
     if (this.value < 0) {
       throw new Error('Cannot extract square root of negative number');
     }
-    return this.value ** (1/2);
+    return this.value ** (1 / 2);
   }
 
   undo() {
