@@ -43,16 +43,21 @@ function updateDisplay(value) {
   display.textContent = value;
 }
 
-let savedValue = null;
+let firstOperand = null;
 let pendingOperation = null;
 
 buttons.forEach((button) => {
   button.addEventListener('click', () => {
     const btnValue = button.textContent.trim();
 
-    if (!isNaN(btnValue) || btnValue === ',') {
-      currentInput += btnValue === ',' ? '.' : btnValue;
+    if (!isNaN(btnValue)) {
+      currentInput += btnValue;
       updateDisplay(currentInput);
+    } else if (btnValue === ',') {
+      if (!currentInput.includes('.')) {
+        currentInput += '.';
+        updateDisplay(currentInput);
+      }
     } else {
       const numInput = parseFloat(currentInput);
 
@@ -65,50 +70,81 @@ buttons.forEach((button) => {
         case 'xʸ':
         case 'ʸ√x':
           if (!isNaN(numInput)) {
-            savedValue = numInput;
+            if (firstOperand !== null && pendingOperation) {
+              let command;
+              switch (pendingOperation) {
+                case '+':
+                  command = new AddCommand(firstOperand, numInput);
+                  break;
+                case '−':
+                  command = new SubtractCommand(firstOperand, numInput);
+                  break;
+                case '×':
+                  command = new MultiplyCommand(firstOperand, numInput);
+                  break;
+                case '÷':
+                  command = new DivideCommand(firstOperand, numInput);
+                  break;
+                case '%':
+                  command = new PercentCommand(firstOperand, numInput);
+                  break;
+                case 'xʸ':
+                  command = new PowerCommand(firstOperand, numInput);
+                  break;
+                case 'ʸ√x':
+                  command = new NthRootCommand(firstOperand, numInput);
+                  break;
+              }
+              calculator.executeCommand(command);
+              firstOperand = calculator.getValue();
+              updateDisplay(firstOperand);
+            } else {
+              firstOperand = numInput;
+            }
+
             pendingOperation = btnValue;
             currentInput = '';
           }
           break;
 
         case '=':
-          if (!isNaN(numInput) && savedValue !== null && pendingOperation) {
+          if (!isNaN(numInput) && firstOperand !== null && pendingOperation) {
             try {
               let command;
 
               switch (pendingOperation) {
                 case '+':
-                  command = new AddCommand(savedValue, numInput);
+                  command = new AddCommand(firstOperand, numInput);
                   break;
                 case '−':
-                  command = new SubtractCommand(savedValue, numInput);
+                  command = new SubtractCommand(firstOperand, numInput);
                   break;
                 case '×':
-                  command = new MultiplyCommand(savedValue, numInput);
+                  command = new MultiplyCommand(firstOperand, numInput);
                   break;
                 case '÷':
-                  command = new DivideCommand(savedValue, numInput);
+                  command = new DivideCommand(firstOperand, numInput);
                   break;
                 case '%':
-                  command = new PercentCommand(savedValue, numInput);
+                  command = new PercentCommand(firstOperand, numInput);
                   break;
                 case 'xʸ':
-                  command = new PowerCommand(savedValue, numInput);
+                  command = new PowerCommand(firstOperand, numInput);
                   break;
                 case 'ʸ√x':
-                  command = new NthRootCommand(savedValue, numInput);
+                  command = new NthRootCommand(firstOperand, numInput);
                   break;
               }
 
               calculator.executeCommand(command);
               updateDisplay(calculator.getValue());
+              currentInput = calculator.getValue().toString();
             } catch (error) {
               updateDisplay(error.message);
+              currentInput = '';
             }
-
-            currentInput = '';
             pendingOperation = null;
-            savedValue = null;
+            firstOperand = null;
           }
           break;
 
@@ -220,7 +256,7 @@ buttons.forEach((button) => {
           calculator.clear();
           currentInput = '';
           pendingOperation = null;
-          savedValue = null;
+          firstOperand = null;
           updateDisplay(0);
           break;
 

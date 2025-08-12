@@ -19,10 +19,10 @@ export class NthRootCommand extends Command {
       throw new Error('Even root of negative number');
     }
 
-    const base = this.a < 0 && this.b % 2 !== 0 ? -this.a : this.a;
+    const base = isNegativeBase ? -this.a : this.a;
     const root = base ** (1 / this.b);
 
-    return this.a < 0 && this.b % 2 !== 0 ? -root : root;
+    return isNegativeBase ? -root : root;
   }
 
   undo() {
