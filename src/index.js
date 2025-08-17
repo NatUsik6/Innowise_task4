@@ -43,6 +43,26 @@ function updateDisplay(value) {
   display.textContent = value;
 }
 
+function executeCommand(command) {
+  try {
+    calculator.executeCommand(command);
+    updateDisplay(calculator.getValue());
+    currentInput = calculator.getValue().toString();
+  } catch (error) {
+    updateDisplay(error.message);
+  }
+}
+
+const operationMap = {
+  '+': (a, b) => new AddCommand(a, b),
+  '−': (a, b) => new SubtractCommand(a, b),
+  '×': (a, b) => new MultiplyCommand(a, b),
+  '÷': (a, b) => new DivideCommand(a, b),
+  '%': (a, b) => new PercentCommand(a, b),
+  xʸ: (a, b) => new PowerCommand(a, b),
+  'ʸ√x': (a, b) => new NthRootCommand(a, b),
+};
+
 let firstOperand = null;
 let pendingOperation = null;
 
@@ -71,30 +91,10 @@ buttons.forEach((button) => {
         case 'ʸ√x':
           if (!isNaN(numInput)) {
             if (firstOperand !== null && pendingOperation) {
-              let command;
-              switch (pendingOperation) {
-                case '+':
-                  command = new AddCommand(firstOperand, numInput);
-                  break;
-                case '−':
-                  command = new SubtractCommand(firstOperand, numInput);
-                  break;
-                case '×':
-                  command = new MultiplyCommand(firstOperand, numInput);
-                  break;
-                case '÷':
-                  command = new DivideCommand(firstOperand, numInput);
-                  break;
-                case '%':
-                  command = new PercentCommand(firstOperand, numInput);
-                  break;
-                case 'xʸ':
-                  command = new PowerCommand(firstOperand, numInput);
-                  break;
-                case 'ʸ√x':
-                  command = new NthRootCommand(firstOperand, numInput);
-                  break;
-              }
+              const command = operationMap[pendingOperation]?.(
+                firstOperand,
+                numInput,
+              );
               calculator.executeCommand(command);
               firstOperand = calculator.getValue();
               updateDisplay(firstOperand);
@@ -110,31 +110,10 @@ buttons.forEach((button) => {
         case '=':
           if (!isNaN(numInput) && firstOperand !== null && pendingOperation) {
             try {
-              let command;
-
-              switch (pendingOperation) {
-                case '+':
-                  command = new AddCommand(firstOperand, numInput);
-                  break;
-                case '−':
-                  command = new SubtractCommand(firstOperand, numInput);
-                  break;
-                case '×':
-                  command = new MultiplyCommand(firstOperand, numInput);
-                  break;
-                case '÷':
-                  command = new DivideCommand(firstOperand, numInput);
-                  break;
-                case '%':
-                  command = new PercentCommand(firstOperand, numInput);
-                  break;
-                case 'xʸ':
-                  command = new PowerCommand(firstOperand, numInput);
-                  break;
-                case 'ʸ√x':
-                  command = new NthRootCommand(firstOperand, numInput);
-                  break;
-              }
+              const command = operationMap[pendingOperation]?.(
+                firstOperand,
+                numInput,
+              );
 
               calculator.executeCommand(command);
               updateDisplay(calculator.getValue());
@@ -150,105 +129,49 @@ buttons.forEach((button) => {
 
         case '+/-':
           if (!isNaN(numInput)) {
-            const command = new NegativeCommand(numInput);
-            try {
-              calculator.executeCommand(command);
-              updateDisplay(calculator.getValue());
-              currentInput = calculator.getValue().toString();
-            } catch (error) {
-              updateDisplay(error.message);
-            }
+            executeCommand(new NegativeCommand(numInput));
           }
           break;
 
         case 'x²':
           if (!isNaN(numInput)) {
-            const command = new SquareCommand(numInput);
-            try {
-              calculator.executeCommand(command);
-              updateDisplay(calculator.getValue());
-              currentInput = calculator.getValue().toString();
-            } catch (error) {
-              updateDisplay(error.message);
-            }
+            executeCommand(new SquareCommand(numInput));
           }
           break;
 
         case 'x³':
           if (!isNaN(numInput)) {
-            const command = new CubeCommand(numInput);
-            try {
-              calculator.executeCommand(command);
-              updateDisplay(calculator.getValue());
-              currentInput = calculator.getValue().toString();
-            } catch (error) {
-              updateDisplay(error.message);
-            }
+            executeCommand(new CubeCommand(numInput));
           }
           break;
 
         case '10ˣ':
           if (!isNaN(numInput)) {
-            const command = new TenPowerCommand(numInput);
-            try {
-              calculator.executeCommand(command);
-              updateDisplay(calculator.getValue());
-              currentInput = calculator.getValue().toString();
-            } catch (error) {
-              updateDisplay(error.message);
-            }
+            executeCommand(new TenPowerCommand(numInput));
           }
           break;
 
         case '1/x':
           if (!isNaN(numInput)) {
-            const command = new InverseCommand(numInput);
-            try {
-              calculator.executeCommand(command);
-              updateDisplay(calculator.getValue());
-              currentInput = calculator.getValue().toString();
-            } catch (error) {
-              updateDisplay(error.message);
-            }
+            executeCommand(new InverseCommand(numInput));
           }
           break;
 
         case '²√x':
           if (!isNaN(numInput)) {
-            const command = new SquareRootCommand(numInput);
-            try {
-              calculator.executeCommand(command);
-              updateDisplay(calculator.getValue());
-              currentInput = calculator.getValue().toString();
-            } catch (error) {
-              updateDisplay(error.message);
-            }
+            executeCommand(new SquareRootCommand(numInput));
           }
           break;
 
         case '³√x':
           if (!isNaN(numInput)) {
-            const command = new CubeRootCommand(numInput);
-            try {
-              calculator.executeCommand(command);
-              updateDisplay(calculator.getValue());
-              currentInput = calculator.getValue().toString();
-            } catch (error) {
-              updateDisplay(error.message);
-            }
+            executeCommand(new CubeRootCommand(numInput));
           }
           break;
 
         case 'x!':
           if (!isNaN(numInput)) {
-            const command = new FactorialCommand(numInput);
-            try {
-              calculator.executeCommand(command);
-              updateDisplay(calculator.getValue());
-              currentInput = calculator.getValue().toString();
-            } catch (error) {
-              updateDisplay(error.message);
-            }
+            executeCommand(new FactorialCommand(numInput));
           }
           break;
 
